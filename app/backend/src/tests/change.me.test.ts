@@ -13,35 +13,11 @@ chai.use(chaiHttp);
 const { app } = new App();
 
 const { expect } = chai;
-
-describe('Seu teste', () => {
-  /**
-   * Exemplo do uso de stubs com tipos
-   */
-
-  // let chaiHttpResponse: Response;
-
-  // before(async () => {
-  //   sinon
-  //     .stub(Example, "findOne")
-  //     .resolves({
-  //       ...<Seu mock>
-  //     } as Example);
-  // });
-
-  // after(()=>{
-  //   (Example.findOne as sinon.SinonStub).restore();
-  // })
-
-  // it('...', async () => {
-  //   chaiHttpResponse = await chai
-  //      .request(app)
-  //      ...
-
-  //   expect(...)
-  // });
-
-  it('Seu sub-teste', () => {
-    expect(false).to.be.eq(true);
+describe('Testando 123', () => {
+  describe('Testando acesso inicial', () => {
+    it('deve retornar uma messagem de "ok"', async () => {
+      const httpResponse = await chai.request(app).get('/');
+      expect(httpResponse.body).to.deep.equal({ ok: true });
+    });
   });
 });
