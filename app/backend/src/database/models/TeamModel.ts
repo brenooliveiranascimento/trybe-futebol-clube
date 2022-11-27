@@ -1,9 +1,9 @@
-import { INTEGER, STRING, Model } from 'sequelize';
+import { Model, INTEGER, STRING } from 'sequelize';
 import db from '.';
 
 class Team extends Model {
-  declare id: number;
-  declare teamName: string;
+  id!: number;
+  teamName!: string;
 }
 
 Team.init({
@@ -20,7 +20,7 @@ Team.init({
 }, {
   underscored: true,
   sequelize: db,
-  modelName: 'Users',
+  modelName: 'Team',
   timestamps: false,
 });
 

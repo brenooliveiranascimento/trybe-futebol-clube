@@ -1,15 +1,16 @@
-import { INTEGER, BOOLEAN, Model } from 'sequelize';
+import { Model, INTEGER, BOOLEAN } from 'sequelize';
 import db from '.';
 import Team from './TeamModel';
 
 class Matches extends Model {
-  declare id: number;
-  declare homeTeam: number;
-  declare homeTeamGoals: number;
-  declare awayTeam: number;
-  declare awayTeamGoals: number;
-  declare inProgress: number;
+  id!: number;
+  homeTeam!: number;
+  homeTeamGoals!: number;
+  awayTeam!: number;
+  awayTeamGoals!: number;
+  inProgress!: boolean;
 }
+
 Matches.init({
   id: {
     type: INTEGER,
@@ -40,7 +41,7 @@ Matches.init({
 }, {
   underscored: true,
   sequelize: db,
-  modelName: 'datches',
+  modelName: 'Matches',
   timestamps: false,
 });
 
