@@ -1,4 +1,5 @@
 import { compare } from 'bcryptjs';
+import IUser from '../interface/IUser';
 import generateToken from '../utils/generateJwt';
 import IUserCreadentials from '../interface/IUserCredentials';
 import Users from '../database/models/UsersModel';
@@ -6,9 +7,9 @@ import CustomError from '../utils/StatusError';
 
 export default class LoginService {
   constructor(private model = Users) {}
-  async findUserByEmail(email: string) {
+  async findUserByEmail(email: string): Promise<IUser> {
     const user = await this.model.findOne({ where: { email } });
-    return user;
+    return user as IUser;
   }
 
   async login(userCredentials: IUserCreadentials): Promise<string | Error> {
@@ -26,5 +27,10 @@ export default class LoginService {
 
     const token = generateToken(checkUserExist.id, checkUserExist.role);
     return token;
+  }
+
+  async validate(email: string): Promise<string> {
+    const { role } = await this.findUserByEmail(email);
+    return role;
   }
 }
