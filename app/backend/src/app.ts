@@ -1,4 +1,6 @@
+import 'express-async-errors';
 import * as express from 'express';
+import errorMiddleware from './middlewares/errorMiddleware';
 import loginRouter from './routes/login';
 
 class App {
@@ -11,6 +13,7 @@ class App {
 
     // Não remover essa rota
     this.app.get('/', (req, res) => res.json({ ok: true }));
+    this.routes();
   }
 
   private config():void {
@@ -27,6 +30,7 @@ class App {
 
   private routes(): void {
     this.app.use('/login', loginRouter);
+    this.app.use(errorMiddleware);
   }
 
   public start(PORT: string | number):void {

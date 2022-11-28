@@ -2,7 +2,7 @@ import { compare } from 'bcryptjs';
 import generateToken from '../utils/generateJwt';
 import IUserCreadentials from '../interface/IUserCredentials';
 import Users from '../database/models/UsersModel';
-import StatusError from '../utils/StatusError';
+import CustomError from '../utils/StatusError';
 
 export default class LoginService {
   constructor(private model = Users) {}
@@ -15,10 +15,14 @@ export default class LoginService {
     const { email, password } = userCredentials;
 
     const checkUserExist = await this.findUserByEmail(email);
-    if (!checkUserExist) return new StatusError('User dont exist', 401);
+    if (!checkUserExist) {
+      throw new CustomError('User dont exist', 401);
+    }
 
     const verifyPassword = compare(password, checkUserExist.password);
-    if (!verifyPassword) throw new StatusError('Invalid passord', 401);
+    if (!verifyPassword) {
+      throw new CustomError('Incorrect email or password', 401);
+    }
 
     const token = generateToken(checkUserExist.id, checkUserExist.email);
     return token;
