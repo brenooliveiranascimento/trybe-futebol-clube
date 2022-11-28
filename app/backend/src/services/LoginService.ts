@@ -19,12 +19,12 @@ export default class LoginService {
       throw new CustomError('User dont exist', 401);
     }
 
-    const verifyPassword = compare(password, checkUserExist.password);
+    const verifyPassword = await compare(password, checkUserExist.password);
     if (!verifyPassword) {
       throw new CustomError('Incorrect email or password', 401);
     }
 
-    const token = generateToken(checkUserExist.id, checkUserExist.email);
+    const token = generateToken(checkUserExist.id, checkUserExist.role);
     return token;
   }
 }
