@@ -16,7 +16,7 @@ export default class LoginService {
 
     const checkUserExist = await this.findUserByEmail(email);
     if (!checkUserExist) {
-      throw new CustomError('User dont exist', 401);
+      throw new CustomError('Incorrect email or password', 401);
     }
 
     const verifyPassword = await compare(password, checkUserExist.password);

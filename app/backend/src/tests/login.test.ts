@@ -30,7 +30,7 @@ describe('Testando fluxo de autenticação', () => {
       });
 
       expect(httpResponse.status).to.be.equal(401);
-      expect(httpResponse.body).to.deep.equal({ message: 'User dont exist' });
+      expect(httpResponse.body).to.deep.equal({ message: 'Incorrect email or password' });
     });
     it('deve retornar um status "401" ao enviar uma senha iunválida', async () => {
       const httpResponse = await chai.request(app).post('/login').send({
