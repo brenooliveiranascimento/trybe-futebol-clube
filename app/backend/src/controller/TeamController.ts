@@ -14,12 +14,14 @@ export default class TeamController {
 
   async getAll(req: Request, res: Response) {
     const getAll = await this._teamService.getAll();
+    console.log(getAll);
     return res.status(200).json(getAll);
   }
 
   async getById(req: Request, res: Response) {
     const { id } = req.params;
     const getTeam = await this._teamService.getTeamById(Number(id));
+    console.log(getTeam);
     return res.status(200).json(getTeam);
   }
 }
