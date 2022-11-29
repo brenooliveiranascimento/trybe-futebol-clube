@@ -10,7 +10,7 @@ const matcherController = new MatchesController(matchesService);
 const matchesRouter = Router();
 
 matchesRouter.get('/', (req, res) => matcherController.getAll(req, res));
-matchesRouter.patch('/:id', (req, res) => matcherController.finished(req, res));
+matchesRouter.patch('/:id', tokenValidation, (req, res) => matcherController.finished(req, res));
 matchesRouter.post('/', tokenValidation, (req, res) => matcherController.addMatch(req, res));
 
 export default matchesRouter;
