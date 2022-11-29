@@ -13,8 +13,8 @@ export default class LoginController {
   }
 
   async validate(req: Request, res: Response) {
-    const { role } = req.body;
-    await this.loginService.validate(role);
+    const { email } = req.body;
+    const role = await this.loginService.validate(email);
     return res.status(200).json(role);
   }
 }

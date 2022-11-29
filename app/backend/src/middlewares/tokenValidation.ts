@@ -3,8 +3,6 @@ import { NextFunction, Request, Response } from 'express';
 import jwt = require('jsonwebtoken');
 import CustomError from '../utils/StatusError';
 
-const { JWT_SECRET = 'jwt_secret' } = process.env;
-
 const tokenValidation = (req:Request, res: Response, next: NextFunction) => {
   const { authorization } = req.headers;
 
@@ -13,8 +11,10 @@ const tokenValidation = (req:Request, res: Response, next: NextFunction) => {
   }
 
   try {
-    const payload = jwt.verify(authorization, JWT_SECRET);
-    req.body = { ...req.body, user: payload };
+    const { email } = jwt
+      .verify(authorization, process.env.JWT_SECRET as string) as Record<string, string>;
+
+    req.body = { ...req.body, email };
     return next();
   } catch (_error) {
     throw new CustomError('Token must be a valid token', 404);
