@@ -41,5 +41,6 @@ describe('Testando fluxo de autenticação', () => {
       expect(httpResponse.status).to.be.equal(401);
       expect(httpResponse.body).to.deep.equal({ message: 'Incorrect email or password' });
     });
+
   });
 });

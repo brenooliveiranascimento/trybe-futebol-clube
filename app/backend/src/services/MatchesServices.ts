@@ -1,4 +1,4 @@
-import { IMatches } from '../interface/IMatches';
+import { IAddMatches, IMatches } from '../interface/IMatches';
 import Matches from '../database/models/MatchesModel';
 import Teams from '../database/models/TeamsModel';
 
@@ -24,6 +24,14 @@ export default class MatchesService {
         { model: Teams, as: 'teamAway', attributes: { exclude: ['id'] } },
       ],
     });
+
     return matches;
+  }
+
+  async addMatch(matchData: IAddMatches): Promise<IAddMatches> {
+    const add = await this.matchesModel.create({
+      ...matchData, inProgress: true,
+    });
+    return add;
   }
 }

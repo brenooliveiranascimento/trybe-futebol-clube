@@ -33,7 +33,7 @@ describe('Testando rotas de matches', () => {
         }
       });
     });
-    it('Deve retornar todos um times e o status "200"', async () => {
+    it('Deve retornar todos um matches filtradas e o status "200"', async () => {
       const httpResponse = await chai.request(app).get('/matches/?inProgress=false')
 
       expect(httpResponse.status).to.be.equal(200);
