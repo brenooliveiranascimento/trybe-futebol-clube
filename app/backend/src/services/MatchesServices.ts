@@ -34,4 +34,12 @@ export default class MatchesService {
     });
     return add;
   }
+
+  async finished(id: number) {
+    const add = await this.matchesModel.update(
+      { inProgress: true },
+      { where: { id } },
+    );
+    return add;
+  }
 }

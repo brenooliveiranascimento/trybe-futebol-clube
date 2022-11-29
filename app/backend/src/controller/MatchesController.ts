@@ -5,6 +5,7 @@ interface IMatchesServices {
   getAll: () => Promise<IMatches[]>;
   getAllFilted: (inProgress: boolean) => Promise<IMatches[]>;
   addMatch: (matchData: IAddMatches) => Promise<IAddMatches>;
+  finished: (id: number) => void
 }
 export default class MatchesController {
   declare _matchesService: IMatchesServices;
@@ -29,5 +30,11 @@ export default class MatchesController {
     const matchData = req.body as IAddMatches;
     const add = await this._matchesService.addMatch(matchData);
     return res.status(201).json(add);
+  }
+
+  async finished(req: Request, res: Response) {
+    const { id } = req.body;
+    await this._matchesService.finished(Number(id));
+    return res.status(201).json({ message: 'Finished' });
   }
 }
