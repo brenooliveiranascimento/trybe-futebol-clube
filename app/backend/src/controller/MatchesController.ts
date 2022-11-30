@@ -39,6 +39,6 @@ export default class MatchesController {
   async finished(req: Request, res: Response) {
     const { id } = req.params;
     await this._matchesService.finished(Number(id));
-    return res.status(201).json({ message: 'Finished' });
+    return res.status(200).json({ message: 'Finished' });
   }
 }
