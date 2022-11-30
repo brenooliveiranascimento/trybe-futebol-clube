@@ -1,4 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Response, Request } from 'express';
+import jwt = require('jsonwebtoken');
 import LoginService from '../services/LoginService';
 
 export default class LoginController {
@@ -13,8 +15,12 @@ export default class LoginController {
   }
 
   async validate(req: Request, res: Response) {
-    const { email } = req.body;
-    const role = await this.loginService.validate(email);
-    return res.status(200).json(role);
+    const { authorization } = req.headers as any;
+    const { id }: Record<string, string> = jwt.verify(
+      authorization,
+      process.env.JWT_SECRET as string,
+    ) as Record<string, string>;
+    const role = await this.loginService.validate(Number(id));
+    return res.status(200).json({ role });
   }
 }

@@ -32,8 +32,8 @@ class App {
 
   private routes(): void {
     this.app.use('/login', loginRouter);
-    this.app.use('/teams', teamRouter);
     this.app.use('/matches', matchesRouter);
+    this.app.use('/teams', teamRouter);
     this.app.use(errorMiddleware);
   }
 

@@ -36,10 +36,10 @@ export default class MatchesService {
   }
 
   async finished(id: number) {
-    const add = await this.matchesModel.update(
-      { inProgress: true },
+    const update = await this.matchesModel.update(
+      { inProgress: false },
       { where: { id } },
     );
-    return add;
+    return update;
   }
 }

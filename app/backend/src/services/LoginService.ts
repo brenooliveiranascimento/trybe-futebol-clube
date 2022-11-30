@@ -12,7 +12,7 @@ export default class LoginService {
     return user as IUser;
   }
 
-  async login(userCredentials: IUserCreadentials): Promise<string | Error> {
+  async login(userCredentials: IUserCreadentials): Promise<string> {
     const { email, password } = userCredentials;
 
     const checkUserExist = await this.findUserByEmail(email);
@@ -29,8 +29,8 @@ export default class LoginService {
     return token;
   }
 
-  async validate(email: string): Promise<string> {
-    const { role } = await this.findUserByEmail(email);
+  async validate(id: number): Promise<string> {
+    const { role } = await this.model.findByPk(id) as IUser;
     return role;
   }
 }
