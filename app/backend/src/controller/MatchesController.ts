@@ -1,12 +1,13 @@
 import { Request, Response } from 'express';
 import CustomError from '../utils/StatusError';
-import { IAddMatches, IMatches } from '../interface/IMatches';
+import { IAddMatches, IMatches, IUpdateMatches } from '../interface/IMatches';
 
 interface IMatchesServices {
   getAll: () => Promise<IMatches[]>;
   getAllFilted: (inProgress: boolean) => Promise<IMatches[]>;
   addMatch: (matchData: IAddMatches) => Promise<IAddMatches>;
-  finished: (id: number) => void
+  finished: (id: number) => void;
+  update: (newMatches: IUpdateMatches, id: number) => void;
 }
 export default class MatchesController {
   declare _matchesService: IMatchesServices;
@@ -40,5 +41,12 @@ export default class MatchesController {
     const { id } = req.params;
     await this._matchesService.finished(Number(id));
     return res.status(200).json({ message: 'Finished' });
+  }
+
+  async update(req: Request, res: Response) {
+    const { id } = req.params;
+    const matcheData: IUpdateMatches = req.body;
+    await this._matchesService.update(matcheData, Number(id));
+    return res.status(200).json({ message: 'updated' });
   }
 }

@@ -15,7 +15,7 @@ const tokenValidation = (req:Request, res: Response, next: NextFunction) => {
       .verify(authorization, process.env.JWT_SECRET as string) as Record<string, string>;
     return next();
   } catch (_error) {
-    throw new CustomError('Token must be a valid token', 404);
+    throw new CustomError('Token must be a valid token', 401);
   }
 };
 

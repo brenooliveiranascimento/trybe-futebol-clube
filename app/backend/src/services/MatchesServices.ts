@@ -1,5 +1,5 @@
 import { ITeams } from '../interface/ITeams';
-import { IAddMatches, IMatches } from '../interface/IMatches';
+import { IAddMatches, IMatches, IUpdateMatches } from '../interface/IMatches';
 import Matches from '../database/models/MatchesModel';
 import Teams from '../database/models/TeamsModel';
 import CustomError from '../utils/StatusError';
@@ -50,6 +50,14 @@ export default class MatchesService {
   async finished(id: number) {
     const update = await this.matchesModel.update(
       { inProgress: false },
+      { where: { id } },
+    );
+    return update;
+  }
+
+  async update(newMatches: IUpdateMatches, id: number) {
+    const update = await this.matchesModel.update(
+      { ...newMatches },
       { where: { id } },
     );
     return update;
