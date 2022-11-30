@@ -38,14 +38,12 @@ export default class MatchesService {
 
   async addMatch(matchData: IAddMatches): Promise<IAddMatches> {
     const { awayTeam, homeTeam } = matchData;
+
     const validateTeams = await this.verifyTeams([awayTeam, homeTeam]);
-    console.log(validateTeams);
-    if (!validateTeams) {
-      throw new CustomError('There is no team with such id!', 404);
-    }
-    const add = await this.matchesModel.create({
-      ...matchData, inProgress: true,
-    });
+
+    if (!validateTeams) throw new CustomError('There is no team with such id!', 404);
+
+    const add = await this.matchesModel.create({ ...matchData, inProgress: true });
     return add;
   }
 
