@@ -8,7 +8,7 @@ export default class LeaderBoardService extends MatchesService {
   constructor(private teamsModel = Teams) { super(); }
 
   async getAllMatchesPerTeam(team: ITeams) {
-    const allMatches = await this.getAllFiltedId(false);
+    const allMatches = await this.getAllFilted(false);
     const filterMatches = allMatches
       .filter((currMatche: IMatches) => currMatche.homeTeam === team.id);
     return filterMatches;
@@ -58,9 +58,9 @@ export default class LeaderBoardService extends MatchesService {
 
   private sortTeams = (a:any, b:any) =>
     b.totalPoints - a.totalPoints
-  || b.goalsBalance - a.goalsBalance
-  || b.goalsFavor - a.goalsFavor
-  || a.goalsOwn - b.goalsOwn;
+    || b.goalsBalance - a.goalsBalance
+    || b.goalsFavor - a.goalsFavor
+    || a.goalsOwn - b.goalsOwn;
 
   async allStatistic() {
     const allTeams: ITeams[] = await this.teamsModel.findAll();
