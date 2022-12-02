@@ -1,7 +1,8 @@
 import { Response, Request } from 'express';
+import { IMatchesKeys } from '../interface/IMatches';
 
 interface ILeaderBoarder {
-  allStatistic: () => any
+  allStatistic: (type: IMatchesKeys) => any
 }
 
 export default class LeaderBoardController {
@@ -10,8 +11,13 @@ export default class LeaderBoardController {
     this._leaderBoardService = leaderBoardService;
   }
 
-  async getStatistic(req: Request, res: Response) {
-    const get = await this._leaderBoardService.allStatistic();
+  async getHomeStatistic(req: Request, res: Response) {
+    const get = await this._leaderBoardService.allStatistic('homeTeam');
+    return res.status(200).json(get);
+  }
+
+  async getAwayStatistic(req: Request, res: Response) {
+    const get = await this._leaderBoardService.allStatistic('awayTeam');
     return res.status(200).json(get);
   }
 }

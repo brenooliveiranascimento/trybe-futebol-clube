@@ -14,7 +14,7 @@ const { app } = new App();
 
 const { expect } = chai;
 describe('Testando rotas de leaderboard', () => {
-    it('Deve retornar todos as estatisticas dos times e o status "200"', async () => {
+    it('Deve retornar todos as estatisticas dos times da casa e o status "200"', async () => {
       const httpResponse = await chai.request(app).get('/leaderboard/home')
 
       expect(httpResponse.status).to.be.equal(200);
@@ -30,6 +30,26 @@ describe('Testando rotas de leaderboard', () => {
           goalsOwn: 3,
           goalsBalance: 6,
           efficiency: 100.00
+        },
+      );
+
+    });
+    it('Deve retornar todos as estatisticas dos times da visitantes e o status "200"', async () => {
+      const httpResponse = await chai.request(app).get('/leaderboard/away')
+
+      expect(httpResponse.status).to.be.equal(200);
+      expect(httpResponse.body[0]).to.deep.equal(
+        {
+          name: "Palmeiras",
+          totalPoints: 6,
+          totalGames: 2,
+          totalVictories: 2,
+          totalDraws: 0,
+          goalsFavor: 7,
+          goalsOwn: 0,
+          goalsBalance: 7,
+          efficiency: 100,
+          totalLosses: 0
         },
       );
 

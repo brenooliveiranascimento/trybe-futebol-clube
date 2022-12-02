@@ -25,3 +25,5 @@ export interface IUpdateMatches {
   awayTeamGoals: number;
   homeTeamGoals: number;
 }
+
+export type IMatchesKeys = keyof IMatches;

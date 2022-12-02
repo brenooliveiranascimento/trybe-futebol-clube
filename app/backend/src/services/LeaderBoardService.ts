@@ -1,31 +1,34 @@
 import Teams from '../database/models/TeamsModel';
 import MatchesService from './MatchesServices';
 import { ITeams } from '../interface/ITeams';
-import { IMatches } from '../interface/IMatches';
+import { IMatches, IMatchesKeys } from '../interface/IMatches';
 import { IGoalsPoints, IGoalsStatistic, ITeamsStatistics } from '../interface/ILeaderBoarder';
 
 export default class LeaderBoardService extends MatchesService {
+  declare type: IMatchesKeys;
   constructor(private teamsModel = Teams) { super(); }
 
   async getAllMatchesPerTeam(team: ITeams) {
     const allMatches = await this.getAllFilted(false);
     const filterMatches = allMatches
-      .filter((currMatche: IMatches) => currMatche.homeTeam === team.id);
+      .filter((currMatche: IMatches) => currMatche[this.type] === team.id);
     return filterMatches;
   }
 
   private sumGoalsAndVictories = (acc: IGoalsStatistic, currMatche: IMatches) => {
-    acc.goals += currMatche.homeTeamGoals;
+    acc.goals += currMatche[this.type === 'awayTeam' ? 'awayTeamGoals' : 'homeTeamGoals'];
 
-    acc.goalsOwn += currMatche.awayTeamGoals;
+    acc.goalsOwn += currMatche[this.type !== 'awayTeam' ? 'awayTeamGoals' : 'homeTeamGoals'];
 
-    acc.totalLosses = currMatche.homeTeamGoals < currMatche.awayTeamGoals
+    acc.totalLosses = currMatche[this.type === 'awayTeam' ? 'awayTeamGoals' : 'homeTeamGoals']
+     < currMatche[this.type !== 'awayTeam' ? 'awayTeamGoals' : 'homeTeamGoals']
       ? acc.totalLosses += 1 : acc.totalLosses;
 
-    acc.victories = currMatche.homeTeamGoals > currMatche.awayTeamGoals
+    acc.victories = currMatche[this.type === 'awayTeam' ? 'awayTeamGoals' : 'homeTeamGoals']
+     > currMatche[this.type !== 'awayTeam' ? 'awayTeamGoals' : 'homeTeamGoals']
       ? acc.victories += 1 : acc.victories;
 
-    acc.totalDraws = currMatche.homeTeamGoals === currMatche.awayTeamGoals
+    acc.totalDraws = currMatche.awayTeamGoals === currMatche.homeTeamGoals
       ? acc.totalDraws += 1 : acc.totalDraws;
 
     return acc;
@@ -58,7 +61,8 @@ export default class LeaderBoardService extends MatchesService {
   private sortTeams = (a:IGoalsPoints, b:IGoalsPoints) => b.totalPoints - a.totalPoints
   || b.goalsBalance - a.goalsBalance || b.goalsFavor - a.goalsFavor || a.goalsOwn - b.goalsOwn;
 
-  async allStatistic(): Promise<ITeamsStatistics[]> {
+  async allStatistic(type: IMatchesKeys): Promise<ITeamsStatistics[]> {
+    this.type = type;
     const allTeams: ITeams[] = await this.teamsModel.findAll();
 
     const getResult = Promise.all(allTeams.map(async (currTeam: ITeams) => {

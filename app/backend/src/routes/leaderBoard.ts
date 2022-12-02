@@ -8,6 +8,7 @@ const leaderBoardController = new LeaderBoardController(leaderBoerderService);
 
 const router = Router();
 
-router.get('/home', (req, res) => leaderBoardController.getStatistic(req, res));
+router.get('/home', (req, res) => leaderBoardController.getHomeStatistic(req, res));
+router.get('/away', (req, res) => leaderBoardController.getAwayStatistic(req, res));
 
 export default router;
