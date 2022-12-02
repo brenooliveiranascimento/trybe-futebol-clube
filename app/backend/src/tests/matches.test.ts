@@ -18,26 +18,12 @@ describe('Testando rotas de matches', () => {
       const httpResponse = await chai.request(app).get('/matches')
 
       expect(httpResponse.status).to.be.equal(200);
-      expect(httpResponse.body[0]).to.deep.equal( {
-        "id": 1,
-        "homeTeam": 16,
-        "homeTeamGoals": 1,
-        "awayTeam": 8,
-        "awayTeamGoals": 1,
-        "inProgress": false,
-        "teamHome": {
-          "teamName": "São Paulo"
-        },
-        "teamAway": {
-          "teamName": "Grêmio"
-        }
-      });
     });
     it('Deve retornar todos um matches filtradas e o status "200"', async () => {
-      const httpResponse = await chai.request(app).get('/matches/?inProgress=false')
+      const httpResponse = await chai.request(app).get('/matches/?inProgress=true')
 
       expect(httpResponse.status).to.be.equal(200);
-      expect(httpResponse.body[0]).to.deep.equal({
+      expect(httpResponse.body[0]).to.deep.equal(  {
         "id": 41,
         "homeTeam": 16,
         "homeTeamGoals": 2,
