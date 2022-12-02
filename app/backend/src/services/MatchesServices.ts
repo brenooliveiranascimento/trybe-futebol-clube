@@ -18,12 +18,23 @@ export default class MatchesService {
   }
 
   async getAllFilted(inProgress: boolean): Promise<IMatches[]> {
-    console.log(inProgress);
     const matches = await this.matchesModel.findAll({
       where: { inProgress },
       include: [
         { model: Teams, as: 'teamHome', attributes: { exclude: ['id'] } },
         { model: Teams, as: 'teamAway', attributes: { exclude: ['id'] } },
+      ],
+    });
+
+    return matches;
+  }
+
+  async getAllFiltedId(inProgress: boolean): Promise<IMatches[]> {
+    const matches = await this.matchesModel.findAll({
+      where: { inProgress },
+      include: [
+        { model: Teams, as: 'teamHome' },
+        { model: Teams, as: 'teamAway' },
       ],
     });
 
