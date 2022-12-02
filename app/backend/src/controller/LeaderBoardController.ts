@@ -1,8 +1,9 @@
 import { Response, Request } from 'express';
+import { ITeamsStatistics } from '../interface/ILeaderBoarder';
 import { IMatchesKeys } from '../interface/IMatches';
 
 interface ILeaderBoarder {
-  allStatistic: (type: IMatchesKeys) => any
+  allStatistic: (type: IMatchesKeys) => Promise<ITeamsStatistics[]>
 }
 
 export default class LeaderBoardController {
