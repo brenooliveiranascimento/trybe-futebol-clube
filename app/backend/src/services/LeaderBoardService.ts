@@ -2,7 +2,7 @@ import Teams from '../database/models/TeamsModel';
 import MatchesService from './MatchesServices';
 import { ITeams } from '../interface/ITeams';
 import { IMatches } from '../interface/IMatches';
-import { IGoalsPoints, IGoalsStatistic } from '../interface/ILeaderBoarder';
+import { IGoalsPoints, IGoalsStatistic, ITeamsStatistics } from '../interface/ILeaderBoarder';
 
 export default class LeaderBoardService extends MatchesService {
   constructor(private teamsModel = Teams) { super(); }
@@ -38,7 +38,7 @@ export default class LeaderBoardService extends MatchesService {
     );
   }
 
-  async mountResponse(team: ITeams) {
+  async mountResponse(team: ITeams): Promise<ITeamsStatistics> {
     const filterMatches: IMatches[] = await this.getAllMatchesPerTeam(team);
 
     const {
@@ -62,7 +62,7 @@ export default class LeaderBoardService extends MatchesService {
     || b.goalsFavor - a.goalsFavor
     || a.goalsOwn - b.goalsOwn;
 
-  async allStatistic() {
+  async allStatistic(): Promise<ITeamsStatistics[]> {
     const allTeams: ITeams[] = await this.teamsModel.findAll();
     const getResult = Promise.all(allTeams.map(async (currTeam: ITeams) => {
       const teamStatistic = await this.mountResponse(currTeam);

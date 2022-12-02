@@ -12,3 +12,10 @@ export interface IGoalsPoints {
   goalsFavor: number
   goalsOwn: number
 }
+
+export interface ITeamsStatistics extends IGoalsPoints {
+  name: string
+  totalGames: number;
+  totalVictories:number;
+  totalDraws: number;
+}
