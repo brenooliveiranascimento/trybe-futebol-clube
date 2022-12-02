@@ -27,6 +27,7 @@ export default class LeaderBoardService extends MatchesService {
 
     acc.totalDraws = currMatche.homeTeamGoals === currMatche.awayTeamGoals
       ? acc.totalDraws += 1 : acc.totalDraws;
+
     return acc;
   };
 
@@ -38,15 +39,13 @@ export default class LeaderBoardService extends MatchesService {
     );
   }
 
-  async mountResponse(team: ITeams): Promise<ITeamsStatistics> {
+  async teamStatistic(team: ITeams): Promise<ITeamsStatistics> {
     const filterMatches: IMatches[] = await this.getAllMatchesPerTeam(team);
 
     const {
       goals, victories, goalsOwn, totalDraws, totalLosses,
-    } = await this.goalsAndVictories(team);
-    const totalGames = filterMatches.length;
-    const totalVictories = victories;
-    const goalsFavor = goals;
+    } = await this.goalsAndVictories(team); const totalGames = filterMatches.length;
+    const totalVictories = victories; const goalsFavor = goals;
     const goalsBalance = goalsFavor - goalsOwn;
     const totalPoints = totalVictories * 3 + totalDraws * 1;
     const efficiency = Number(((totalPoints / (totalGames * 3)) * 100).toFixed(2));
@@ -56,18 +55,17 @@ export default class LeaderBoardService extends MatchesService {
     };
   }
 
-  private sortTeams = (a:IGoalsPoints, b:IGoalsPoints) =>
-    b.totalPoints - a.totalPoints
-    || b.goalsBalance - a.goalsBalance
-    || b.goalsFavor - a.goalsFavor
-    || a.goalsOwn - b.goalsOwn;
+  private sortTeams = (a:IGoalsPoints, b:IGoalsPoints) => b.totalPoints - a.totalPoints
+  || b.goalsBalance - a.goalsBalance || b.goalsFavor - a.goalsFavor || a.goalsOwn - b.goalsOwn;
 
   async allStatistic(): Promise<ITeamsStatistics[]> {
     const allTeams: ITeams[] = await this.teamsModel.findAll();
+
     const getResult = Promise.all(allTeams.map(async (currTeam: ITeams) => {
-      const teamStatistic = await this.mountResponse(currTeam);
+      const teamStatistic = await this.teamStatistic(currTeam);
       return teamStatistic;
     }));
+
     return (await getResult).sort(this.sortTeams);
   }
 }
