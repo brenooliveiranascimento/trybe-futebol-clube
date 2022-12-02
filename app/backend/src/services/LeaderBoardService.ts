@@ -15,11 +15,16 @@ export default class LeaderBoardService extends MatchesService {
   }
 
   private mountTeamStatistic = (acc: IGoalsStatistic, currMatche: IMatches) => {
-    acc.goals += currMatche.homeTeamGoals; acc.goalsOwn += currMatche.awayTeamGoals;
+    acc.goals += currMatche.homeTeamGoals;
+
+    acc.goalsOwn += currMatche.awayTeamGoals;
+
     acc.totalLosses = currMatche.homeTeamGoals < currMatche.awayTeamGoals
       ? acc.totalLosses += 1 : acc.totalLosses;
-    acc.victories = currMatche.homeTeamGoals
-     > currMatche.awayTeamGoals ? acc.victories += 1 : acc.victories;
+
+    acc.victories = currMatche.homeTeamGoals > currMatche.awayTeamGoals
+      ? acc.victories += 1 : acc.victories;
+
     acc.totalDraws = currMatche.homeTeamGoals === currMatche.awayTeamGoals
       ? acc.totalDraws += 1 : acc.totalDraws;
     return acc;
