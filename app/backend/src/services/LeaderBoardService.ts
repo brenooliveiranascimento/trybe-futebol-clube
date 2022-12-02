@@ -2,7 +2,7 @@ import Teams from '../database/models/TeamsModel';
 import MatchesService from './MatchesServices';
 import { ITeams } from '../interface/ITeams';
 import { IMatches } from '../interface/IMatches';
-import { IGoalsStatistic } from '../interface/ILeaderBoarder';
+import { IGoalsPoints, IGoalsStatistic } from '../interface/ILeaderBoarder';
 
 export default class LeaderBoardService extends MatchesService {
   constructor(private teamsModel = Teams) { super(); }
@@ -56,7 +56,7 @@ export default class LeaderBoardService extends MatchesService {
     };
   }
 
-  private sortTeams = (a:any, b:any) =>
+  private sortTeams = (a:IGoalsPoints, b:IGoalsPoints) =>
     b.totalPoints - a.totalPoints
     || b.goalsBalance - a.goalsBalance
     || b.goalsFavor - a.goalsFavor

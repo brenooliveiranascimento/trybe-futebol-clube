@@ -3,5 +3,12 @@ export interface IGoalsStatistic {
   victories: number,
   goalsOwn: number,
   totalLosses: number,
-  totalDraws: number
+  totalDraws: number,
+}
+
+export interface IGoalsPoints {
+  totalPoints: number;
+  goalsBalance: number;
+  goalsFavor: number
+  goalsOwn: number
 }
