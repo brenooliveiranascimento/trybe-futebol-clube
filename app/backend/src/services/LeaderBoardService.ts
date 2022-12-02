@@ -15,15 +15,11 @@ export default class LeaderBoardService extends MatchesService {
   }
 
   private mountTeamStatistic = (acc: IGoalsStatistic, currMatche: IMatches) => {
-    if (currMatche.homeTeamGoals > currMatche.awayTeamGoals) {
-      acc.goals += currMatche.homeTeamGoals;
-      acc.victories += 1;
-      acc.goalsOwn += currMatche.awayTeamGoals;
-      return acc;
-    }
     acc.goals += currMatche.homeTeamGoals; acc.goalsOwn += currMatche.awayTeamGoals;
     acc.totalLosses = currMatche.homeTeamGoals < currMatche.awayTeamGoals
       ? acc.totalLosses += 1 : acc.totalLosses;
+    acc.victories = currMatche.homeTeamGoals
+     > currMatche.awayTeamGoals ? acc.victories += 1 : acc.victories;
     acc.totalDraws = currMatche.homeTeamGoals === currMatche.awayTeamGoals
       ? acc.totalDraws += 1 : acc.totalDraws;
     return acc;
@@ -31,12 +27,10 @@ export default class LeaderBoardService extends MatchesService {
 
   async sumVictoriesAndGoals(team: ITeams):Promise<IGoalsStatistic> {
     const matches: IMatches[] = await this.getAllMatchesPerTeam(team);
-    const sum = matches
-      .reduce(
-        this.mountTeamStatistic,
-        { victories: 0, goals: 0, goalsOwn: 0, totalLosses: 0, totalDraws: 0 },
-      );
-    return sum;
+    return matches.reduce(
+      this.mountTeamStatistic,
+      { victories: 0, goals: 0, goalsOwn: 0, totalLosses: 0, totalDraws: 0 },
+    );
   }
 
   async mountResponse(team: ITeams) {
